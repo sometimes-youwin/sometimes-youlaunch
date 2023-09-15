@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://1ilnpb8c6mns"]
+
+[ext_resource type="Script" path="res://screens/splash.gd" id="1_qf8d6"]
+[ext_resource type="Texture2D" uid="uid://c6xxvox452ypk" path="res://assets/icon.svg" id="2_me4y3"]
+
+[node name="Splash" type="CanvasLayer"]
+script = ExtResource("1_qf8d6")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.113281, 0.132813, 0.160156, 1)
+
+[node name="Icon" type="TextureRect" parent="."]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_me4y3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.8
+anchor_right = 0.9
+anchor_bottom = 0.8
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Status" type="RichTextLabel" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 2
+bbcode_enabled = true
+text = "[center]Starting preload[/center]"
+fit_content = true
+selection_enabled = true
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+max_value = 1.0
