@@ -66,33 +66,16 @@ var command: String :
 	set(v):
 		_command.text = v
 
+var default_search_path := ""
+
 #-----------------------------------------------------------------------------#
 # Builtin functions
 #-----------------------------------------------------------------------------#
 
 func _ready() -> void:
 	_path_button.pressed.connect(func() -> void:
-		var fd := FileDialog.new()
-		fd.access = FileDialog.ACCESS_FILESYSTEM
-		fd.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-		# TODO override with a user provided default search path?
-		match OS.get_name().to_lower():
-			"windows", "uwp":
-				fd.current_dir = "{0}{1}".format([
-					OS.get_environment("HOMEDRIVE"), OS.get_environment("HOMEPATH")])
-			"macos", "linux", "freebsd", "netbsd", "openbsd", "bsd":
-				fd.current_dir = OS.get_environment("HOME")
-		
-		fd.close_requested.connect(func(text: String = "") -> void:
-			fd.queue_free()
-		)
-		fd.visibility_changed.connect(func() -> void:
-			if not fd.visible:
-				fd.close_requested.emit()
-		)
-		fd.file_selected.connect(func(text: String) -> void:
-			fd.close_requested.emit(text)
-		)
+		var fd := FileDialogUtil.create_file_dialog(
+			FileDialog.FILE_MODE_OPEN_FILE, default_search_path)
 		
 		add_child(fd)
 		fd.popup_centered_ratio()
@@ -101,6 +84,7 @@ func _ready() -> void:
 		if not path is String:
 			return
 		
+		_launchable_name.text = path.get_file()
 		_path_input.text = path
 	)
 	
@@ -142,6 +126,8 @@ func init_from_launchable(launchable: Launchable) -> void:
 
 ## Initialize the launchables drop down with information from the [Metadata].
 func init_from_metadata(metadata: Metadata) -> void:
+	default_search_path = metadata.default_search_path
+	
 	for i in metadata.launchables:
 		_sublauncher.add_item(i.name)
 	if _sublauncher.item_count < 1:

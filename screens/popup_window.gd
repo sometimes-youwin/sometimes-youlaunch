@@ -11,6 +11,8 @@ func _init(window_name: StringName, gui: PopupInterface) -> void:
 	gui.set("window", self)
 	
 	title = window_name
+	transient = true
+	exclusive = true
 	
 	var background := ColorRect.new()
 	background.set_anchors_preset(Control.PRESET_FULL_RECT)

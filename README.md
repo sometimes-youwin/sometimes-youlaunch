@@ -1,5 +1,7 @@
 # Sometimes Youlaunch
 
+![](assets/Thinking.png)
+
 A launcher for apps and files:
 
 - `App`: A path to an executable binary

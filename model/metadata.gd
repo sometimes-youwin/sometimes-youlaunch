@@ -4,6 +4,8 @@ extends Resource
 const SAVE_PATH := "user://metadata.tres"
 
 @export
+var default_search_path := ""
+@export
 var launchables: Array[Launchable] = []
 
 #-----------------------------------------------------------------------------#
@@ -37,6 +39,10 @@ static func create() -> Metadata:
 		r = Metadata.new()
 	
 	return r
+
+func reset() -> void:
+	default_search_path = ""
+	launchables.clear()
 
 func find_match(input: Launchable) -> Launchable:
 	var found := launchables.filter(func(v: Launchable) -> bool:

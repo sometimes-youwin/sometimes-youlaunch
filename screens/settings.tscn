@@ -13,7 +13,38 @@ script = ExtResource("1_2a0dx")
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="DefaultSearchPath" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-text = "TODO"
+tooltip_text = "The default path to search when using a file selector."
+
+[node name="Label" type="Label" parent="VBoxContainer/DefaultSearchPath"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+text = "Default Search Path"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/DefaultSearchPath"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DefaultSearchPathInput" type="LineEdit" parent="VBoxContainer/DefaultSearchPath/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+
+[node name="DefaultSearchPathButton" type="Button" parent="VBoxContainer/DefaultSearchPath/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+text = "Select"
+
+[node name="HardReset" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 10
+focus_mode = 0
+text = "Hard Reset"

@@ -17,6 +17,7 @@ config/custom_user_dir_name="sometimes-youlaunch"
 config/features=PackedStringArray("4.1", "Mobile")
 run/low_processor_mode=true
 config/icon="res://assets/icon.svg"
+config/windows_native_icon="res://assets/Thinking.ico"
 
 [display]
 

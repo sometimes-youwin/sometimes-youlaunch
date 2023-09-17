@@ -4,6 +4,7 @@ const AddDialogue: PackedScene = preload("res://screens/add_dialogue.tscn")
 const LaunchInfo: PackedScene = preload("res://screens/launch_info.tscn")
 const LandingPage: PackedScene = preload("res://screens/landing_page.tscn")
 const Settings: PackedScene = preload("res://screens/settings.tscn")
+const Licenses: PackedScene = preload("res://screens/licenses.tscn")
 
 const LANDING_PAGE_NAME := "Home"
 const NAME_COL: int = 0
@@ -62,12 +63,26 @@ func _ready() -> void:
 		_create_launchable_page(data)
 	)
 	%StopAll.pressed.connect(_landing_page.kill_all)
+	%Licenses.pressed.connect(func() -> void:
+		var gui := Licenses.instantiate()
+		var popup := PopupWindow.new("Licenses", gui)
+		
+		add_child(popup)
+		popup.popup_centered_ratio(0.5)
+	)
 	%Settings.pressed.connect(func() -> void:
 		var gui := Settings.instantiate()
+		gui.metadata = _metadata
 		var popup := PopupWindow.new("Settings", gui)
 		
 		add_child(popup)
 		popup.popup_centered_ratio(0.5)
+		
+		await popup.close_requested
+		
+		# Hard reset
+		if _metadata.launchables.size() != _pages.size():
+			get_tree().reload_current_scene()
 	)
 
 func _exit_tree() -> void:
