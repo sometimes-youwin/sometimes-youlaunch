@@ -40,7 +40,7 @@ func check() -> Array[String]:
 	if command.is_empty():
 		r.push_back(SublaunchableError.EMPTY_COMMAND)
 	else:
-		if not command.contains("{{0}}".format([COMMAND_KEY])):
+		if not command.contains(COMMAND_KEY):
 			r.push_back(LaunchableError.MISSING_FORMAT_KEY.format([COMMAND_KEY]))
 	
 	if launchable == null:
@@ -55,7 +55,7 @@ func to_command() -> Variant:
 		return ERR_INVALID_DATA
 	
 	return command.format({
-		command = launchable.path,
+		command = launchable.to_command(),
 		path = path
 	})
 

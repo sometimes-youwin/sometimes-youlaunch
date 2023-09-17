@@ -12,7 +12,7 @@ extends Resource
 const LaunchableError := {
 	EMPTY_NAME = "Name is missing",
 	PATH_DOES_NOT_EXIST = "Path does not exist: {0}",
-	MISSING_FORMAT_KEY = "Command does not contain the expected format key: {{0}}"
+	MISSING_FORMAT_KEY = "Command does not contain the expected format key: {0}"
 }
 
 ## The key used when formatting the [member command].
@@ -40,6 +40,9 @@ var command := ""
 ## The amount of times this [code]Launchable[/code] has been used.
 @export
 var use_count: int = 0
+## The last time this [code]Launchable[/code] was used.
+@export
+var last_used_datetime := Time.get_datetime_dict_from_unix_time(0)
 
 #-----------------------------------------------------------------------------#
 # Builtin functions
@@ -65,10 +68,18 @@ func check() -> Array[String]:
 		r.push_back(LaunchableError.PATH_DOES_NOT_EXIST.format([path]))
 	
 	if not command.is_empty():
-		if not command.contains("{{0}}".format([PATH_KEY])):
+		if not command.contains(PATH_KEY):
 			r.push_back(LaunchableError.MISSING_FORMAT_KEY.format([PATH_KEY]))
 	
 	return r
+
+## Update the [member last_used_datetime] to the current system time.
+func timestamp() -> void:
+	last_used_datetime = Time.get_datetime_dict_from_system()
+
+## Get the [member last_used_datetime] as a human-readable [String].
+func readable_last_used_datetime() -> String:
+	return "{year}-{month}-{day} {hour}:{minute}:{second}".format(last_used_datetime)
 
 ## Get the formatted command from this [code]Launchable[/code]. If the command is not valid,
 ## an error code will be returned. Otherwise, the [String] command will be returned.
@@ -76,9 +87,12 @@ func to_command() -> Variant:
 	if not check().is_empty():
 		return ERR_INVALID_DATA
 	
-	return command.format({
-		path = path
-	})
+	if command.is_empty():
+		return path
+	else:
+		return command.format({
+			path = path
+		})
 
 ## Create a [code]Launchable[/code] from a [Sublaunchable].
 static func from_sublaunchable(sublaunchable: Sublaunchable) -> Launchable:

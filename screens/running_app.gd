@@ -1,29 +1,19 @@
-extends PopupInterface
+extends HBoxContainer
+
+signal stopped(pid: int)
 
 @onready
-var app_info: ScrollContainer = %AppInfo
+var app_name: RichTextLabel = %Name
 @onready
-var _status: RichTextLabel = %Status
+var pid: RichTextLabel = %Pid
 
 #-----------------------------------------------------------------------------#
 # Builtin functions
 #-----------------------------------------------------------------------------#
 
 func _ready() -> void:
-	%Accept.pressed.connect(func() -> void:
-		var r: Launchable = app_info.build()
-		
-		var errors := r.check()
-		if not errors.is_empty():
-			_status.clear()
-			for i in errors:
-				_status.append_text("{0}\n".format([i]))
-			return
-		
-		finished.emit(r)
-	)
-	%Cancel.pressed.connect(func() -> void:
-		finished.emit()
+	%Stop.pressed.connect(func() -> void:
+		stopped.emit(pid.text.to_int())
 	)
 
 #-----------------------------------------------------------------------------#

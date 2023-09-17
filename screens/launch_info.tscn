@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwnryvuvs0yly"]
+[gd_scene load_steps=3 format=3 uid="uid://cwnryvuvs0yly"]
 
 [ext_resource type="Script" path="res://screens/launch_info.gd" id="1_porij"]
+[ext_resource type="PackedScene" uid="uid://dj2fnogr47h1x" path="res://screens/app_info.tscn" id="2_pfnq3"]
 
 [node name="LaunchInfo" type="VBoxContainer"]
 anchors_preset = 15
@@ -8,40 +9,81 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_porij")
 
 [node name="Actions" type="HBoxContainer" parent="."]
 layout_mode = 2
 
 [node name="Start" type="Button" parent="Actions"]
+unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 text = "Start"
 
 [node name="Edit" type="Button" parent="Actions"]
+unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 text = "Edit"
 
+[node name="Cancel" type="Button" parent="Actions"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Cancel"
+
 [node name="Delete" type="Button" parent="Actions"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
+focus_mode = 0
 text = "Delete"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="Status" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 3
+focus_mode = 2
+fit_content = true
+selection_enabled = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="AppInfo" parent="." instance=ExtResource("2_pfnq3")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="LastUsed" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LastUsed"]
 layout_mode = 2
 size_flags_horizontal = 3
+text = "Last Used"
 
-[node name="Name" type="HBoxContainer" parent="ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Name"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Name"
-
-[node name="Name" type="LineEdit" parent="ScrollContainer/VBoxContainer/Name"]
+[node name="LastUsed" type="RichTextLabel" parent="LastUsed"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 2
+selection_enabled = true
+
+[node name="TimesUsed" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TimesUsed"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Times Used"
+
+[node name="TimesUsed" type="RichTextLabel" parent="TimesUsed"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 2
+selection_enabled = true
