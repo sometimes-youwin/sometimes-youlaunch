@@ -34,6 +34,10 @@ func add_running_app(app_name: String, pid: int) -> void:
 		app.queue_free()
 	)
 
+## Get all running app nodes.
+func get_running_apps() -> Array:
+	return _running_apps.get_children()
+
 ## Kill all running apps.
 func kill_all() -> void:
 	for child in _running_apps.get_children():

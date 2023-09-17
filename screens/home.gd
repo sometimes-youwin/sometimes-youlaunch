@@ -84,6 +84,35 @@ func _ready() -> void:
 		if _metadata.launchables.size() != _pages.size():
 			get_tree().reload_current_scene()
 	)
+	get_tree().auto_accept_quit = false
+	get_tree().root.get_window().close_requested.connect(func() -> void:
+		if _landing_page.get_running_apps().size() > 0:
+			var cd := ConfirmationDialog.new()
+			cd.dialog_text = "Quitting will close all running apps. Continue?"
+			cd.close_requested.connect(func(val: bool = false) -> void:
+				cd.queue_free()
+			)
+			cd.confirmed.connect(func() -> void:
+				cd.close_requested.emit(true)
+			)
+			cd.canceled.connect(func() -> void:
+				cd.close_requested.emit(false)
+			)
+			cd.theme = preload("res://assets/main.theme")
+			
+			add_child(cd)
+			cd.popup_centered()
+			
+			var confirmed: bool = await cd.close_requested
+			if not confirmed:
+				return
+			
+			_landing_page.kill_all()
+			while _landing_page.get_running_apps().size() > 0:
+				await get_tree().process_frame
+		
+		get_tree().quit()
+	)
 
 func _exit_tree() -> void:
 	if _metadata.save() != OK:
