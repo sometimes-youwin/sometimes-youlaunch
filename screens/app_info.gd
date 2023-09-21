@@ -135,10 +135,23 @@ func init_from_metadata(metadata: Metadata) -> void:
 	var sublauncher_popup := _sublauncher.get_popup()
 	sublauncher_popup.index_pressed.connect(func(idx: int) -> void:
 		if metadata.launchables.size() > 0:
-			sublaunchable = metadata.launchables[idx]
+			var selected_name := _sublauncher.get_item_text(idx)
+			var found: Launchable = metadata.find_match(selected_name)
+			if found == null:
+				printerr("Unable to find launchable with name {0}".format([selected_name]))
+				return
+			
+			sublaunchable = found
 	)
-	_sublauncher.select(0)
-	sublauncher_popup.index_pressed.emit(0)
+	if sublaunchable != null:
+		for i in _sublauncher.item_count:
+			if _sublauncher.get_item_text(i) == sublaunchable.name:
+				_sublauncher.select(i)
+				sublauncher_popup.index_pressed.emit(i)
+				break
+	else:
+		_sublauncher.select(0)
+		sublauncher_popup.index_pressed.emit(0)
 
 ## Enable or disable editing of fields.
 func set_editable(state: bool) -> void:

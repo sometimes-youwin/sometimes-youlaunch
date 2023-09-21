@@ -44,9 +44,9 @@ func reset() -> void:
 	default_search_path = ""
 	launchables.clear()
 
-func find_match(input: Launchable) -> Launchable:
+func find_match(input: Variant) -> Launchable:
 	var found := launchables.filter(func(v: Launchable) -> bool:
-		return v.name == input.name
+		return v.name == input.name if input is Launchable else v.name == input
 	)
 	if found.size() != 1:
 		return null
@@ -66,19 +66,24 @@ func update_launchable(input: Launchable) -> Error:
 func verify_launchables() -> Error:
 	for i in launchables:
 		if i is Sublaunchable:
-			if _verify_sublaunchable(i) != OK:
+			var err := _verify_sublaunchable(i)
+			if err != OK:
 				printerr("Error with sublaunchable {0}".format([i.name]))
+				return err
 		
 		var errors := i.check()
 		if not errors.is_empty():
 			printerr("Launchable {0} has errors:".format([i.name]))
 			for e in errors:
 				printerr(e)
+			return errors.front()
 		
 	return OK
 
 func save() -> Error:
-	verify_launchables()
+	var err := verify_launchables()
+	if err != OK:
+		return err
 	sort()
 	
 	return ResourceSaver.save(self, SAVE_PATH)

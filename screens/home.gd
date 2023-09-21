@@ -31,6 +31,10 @@ var _metadata := Metadata.create()
 func _ready() -> void:
 	$VBoxContainer/HSplitContainer.split_offset = get_viewport().size.x * 0.2
 	
+	get_window().focus_entered.connect(func() -> void:
+		_landing_page.refresh_running_status()
+	)
+	
 	var root := _tree.create_item()
 	_tree.item_selected.connect(func() -> void:
 		_change_page(_tree.get_selected().get_text(NAME_COL))
@@ -62,6 +66,7 @@ func _ready() -> void:
 		_metadata.launchables.push_back(data)
 		_create_launchable_page(data)
 	)
+	%UpdateStatus.pressed.connect(_landing_page.refresh_running_status)
 	%StopAll.pressed.connect(_landing_page.kill_all)
 	%Licenses.pressed.connect(func() -> void:
 		var gui := Licenses.instantiate()

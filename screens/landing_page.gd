@@ -34,8 +34,16 @@ func add_running_app(app_name: String, pid: int) -> void:
 		app.queue_free()
 	)
 
+## Check all running apps to see if they are still running.
+func refresh_running_status() -> void:
+	for app in get_running_apps():
+		var pid: int = app.pid.text.to_int()
+		if not OS.is_process_running(pid):
+			print_debug("{0} is no longer running, removing GUI item".format([pid]))
+			app.queue_free()
+
 ## Get all running app nodes.
-func get_running_apps() -> Array:
+func get_running_apps() -> Array[Node]:
 	return _running_apps.get_children()
 
 ## Kill all running apps.

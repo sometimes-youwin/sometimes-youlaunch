@@ -36,6 +36,12 @@ layout_mode = 2
 focus_mode = 0
 text = "Add"
 
+[node name="UpdateStatus" type="Button" parent="VBoxContainer/Actions"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Update Status"
+
 [node name="StopAll" type="Button" parent="VBoxContainer/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
